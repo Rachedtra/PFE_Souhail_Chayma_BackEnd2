@@ -33,6 +33,10 @@ namespace Poulina.GestionCommentaire.Api
               opt.UseSqlServer(Configuration.GetConnectionString("premiereappdb")));
             services.AddMediatR(typeof(Startup));
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
             RegisterService(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -48,7 +52,13 @@ namespace Poulina.GestionCommentaire.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(options =>
+          options.WithOrigins("http://localhost:4200")
+           .AllowAnyMethod()
+           .SetIsOriginAllowed((host) => true)
+           .AllowCredentials()
+           .AllowAnyHeader());
+            
             app.UseMvc();
         }
     }
