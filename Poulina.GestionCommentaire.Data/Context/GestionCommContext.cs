@@ -73,7 +73,8 @@ namespace Poulina.GestionCommentaire.Data.Context
             modelBuilder.Entity<SousCategorie>()
                .HasOne(e => e.Categories)
                .WithMany(s => s.sousCategories)
-                .HasForeignKey(p => p.CatFK); //one to many
+                .HasForeignKey(p => p.CatFK)
+                .OnDelete(DeleteBehavior.ClientSetNull); //one to many
 
         }
     }

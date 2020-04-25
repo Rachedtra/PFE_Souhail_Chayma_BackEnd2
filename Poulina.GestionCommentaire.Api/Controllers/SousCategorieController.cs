@@ -13,10 +13,10 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SousCategoriesController : ControllerBase
+    public class SousCategorieController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public SousCategoriesController(IMediator mediator)
+        public SousCategorieController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -33,7 +33,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SousCategorie>> Get(Guid id)
         {
-            var query = new GetIdQueryGeneric<DemandeInformation>(id);
+            var query = new GetIdQueryGeneric<SousCategorie>(id);
             var result = await _mediator.Send(query);
             return Ok(result);
 
@@ -41,19 +41,19 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         // POST: api/SousCategorie
         [HttpPost]
-        public async Task<ActionResult<string>> Post(SousCategorie de)
+        public async Task<ActionResult<string>> Post(SousCategorie sc)
         {
-            var comm = new CreateCommandGeneric<SousCategorie>(de);
+            var comm = new CreateCommandGeneric<SousCategorie>(sc);
             var result = await _mediator.Send(comm);
             return Ok(result);
 
         }
 
-        // PUT: api/SousCategorie/5
+        // PUT: api/Vote/5
         [HttpPut]
-        public async Task<ActionResult<string>> Put(SousCategorie de)
+        public async Task<ActionResult<string>> Put(SousCategorie sc)
         {
-            var comm = new UpdateCommandGeneric<SousCategorie>(de);
+            var comm = new UpdateCommandGeneric<SousCategorie>(sc);
             var result = await _mediator.Send(comm);
             return Ok(result);
 
