@@ -12,3 +12,4 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public ICollection<SousCategorie> sousCategories { get; set;  }
     }
 }
+

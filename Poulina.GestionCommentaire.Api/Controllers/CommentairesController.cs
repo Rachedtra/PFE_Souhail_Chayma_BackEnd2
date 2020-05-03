@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Poulina.GestionCommentaire.Data.Context;
 using Poulina.GestionCommentaire.Domain.Commandes;
 using Poulina.GestionCommentaire.Domain.Models;
+
 using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers

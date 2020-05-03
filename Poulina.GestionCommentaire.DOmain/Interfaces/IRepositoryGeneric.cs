@@ -13,5 +13,6 @@ namespace Poulina.GestionCommentaire.Domain.Interfaces
         string Delete(Guid id);
 
 
+
     }
 }

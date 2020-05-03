@@ -11,6 +11,7 @@ namespace Poulina.GestionCommentaire.Data.Migrations
     [DbContext(typeof(GestionCommContext))]
     partial class GestionCommContextModelSnapshot : ModelSnapshot
     {
+
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

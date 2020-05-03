@@ -12,6 +12,7 @@ namespace Poulina.GestionCommentaire.Data.Context
         {
         }
 
+
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Commentaires> Commentaires { get; set; }
         public DbSet<DemandeInformation> DemandeInformation { get; set; }

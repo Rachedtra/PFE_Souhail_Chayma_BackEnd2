@@ -81,6 +81,7 @@ namespace GestionCommentaire.Infra.Ioc
             //SousCategorie
             services.AddScoped<IRepositoryGeneric<SousCategorie>, RepositoryGeneric<SousCategorie>>();
 
+
             services.AddScoped<IRequestHandler<GetAllQueryGeneric<SousCategorie>, List<SousCategorie>>, GetAllHandlerGeneric<SousCategorie>>();
             services.AddScoped<IRequestHandler<GetIdQueryGeneric<SousCategorie>, SousCategorie>, GetIdHandlerGeneric<SousCategorie>>();
             services.AddScoped<IRequestHandler<CreateCommandGeneric<SousCategorie>, string>, CreateHandlerGeneric<SousCategorie>>();

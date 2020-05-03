@@ -16,6 +16,7 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
         public GetAllHandlerGeneric(IRepositoryGeneric<TEntity> dataRepository)
         {
 
+
             _dataRepository = dataRepository;
 
         }

@@ -12,6 +12,7 @@ namespace Poulina.GestionCommentaire.Data.Repository
     {
         private DbSet<TEntity> tab = null;
 
+
         private readonly GestionCommContext _context;
         public RepositoryGeneric(GestionCommContext context)
         {

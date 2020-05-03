@@ -13,3 +13,4 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public ICollection<CommVote> commVotes { get; set;  }
     }
 }
+

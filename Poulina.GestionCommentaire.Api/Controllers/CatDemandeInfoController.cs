@@ -14,6 +14,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CatDemandeInfoController : ControllerBase
+
     {
         private readonly IMediator _mediator;
         public CatDemandeInfoController(IMediator mediator)

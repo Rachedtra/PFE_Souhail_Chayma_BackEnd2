@@ -10,6 +10,7 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public Guid? IdCat { get; set; }
         public Categorie categories { get; set;  }
         public Guid IdDemandeInfo { get; set; }
-        public DemandeInformation demandeInformations { get; set;  }
+        public DemandeInformation demandeInformations { get; set;  
+        }
     }
 }

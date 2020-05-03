@@ -11,6 +11,7 @@ using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class VoteController : ControllerBase

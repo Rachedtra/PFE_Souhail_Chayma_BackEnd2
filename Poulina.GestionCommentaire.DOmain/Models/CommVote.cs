@@ -14,5 +14,6 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public Commentaires commentaires { get; set; }
         public Guid? IdVote { get; set; }
         public Vote votes { get; set;  }
+
     }
 }
