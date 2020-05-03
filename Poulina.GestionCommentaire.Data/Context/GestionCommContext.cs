@@ -68,7 +68,7 @@ namespace Poulina.GestionCommentaire.Data.Context
             modelBuilder.Entity<CommVote>()//many to many
                .HasOne(e => e.commentaires)
                .WithMany(s => s.commVotes)
-                .HasForeignKey(p => p.IdVote);
+                .HasForeignKey(p => p.IdComm);
 
             modelBuilder.Entity<SousCategorie>()
                .HasOne(e => e.Categories)

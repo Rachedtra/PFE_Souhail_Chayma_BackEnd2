@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Poulina.GestionCommentaire.Data.Context;
 
 namespace Poulina.GestionCommentaire.Data.Migrations
 {
     [DbContext(typeof(GestionCommContext))]
-    partial class GestionCommContextModelSnapshot : ModelSnapshot
+    [Migration("20200425160123_IdCOmm")]
+    partial class IdCOmm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
