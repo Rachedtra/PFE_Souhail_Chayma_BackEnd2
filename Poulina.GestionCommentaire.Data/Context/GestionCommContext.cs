@@ -12,7 +12,6 @@ namespace Poulina.GestionCommentaire.Data.Context
         {
         }
 
-
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Commentaires> Commentaires { get; set; }
         public DbSet<DemandeInformation> DemandeInformation { get; set; }
@@ -44,37 +43,38 @@ namespace Poulina.GestionCommentaire.Data.Context
             modelBuilder.Entity<CatDemandeInfo>()//many to many
               .HasOne(e => e.categories)
               .WithMany(s => s.catDemandeInfos)
-               .HasForeignKey(p => p.IdCat);
+               .HasForeignKey(p => p.IdCat).OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<CatDemandeInfo>()//many to many
                .HasOne(e => e.demandeInformations)
                .WithMany(s => s.catDemandeInfos)
-                .HasForeignKey(p => p.IdDemandeInfo);
+                .HasForeignKey(p => p.IdDemandeInfo).OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<CommDemandeInfo>()//many to many
              .HasOne(e => e.commentaires)
              .WithMany(s => s.commDemandeInfos)
-              .HasForeignKey(p => p.IdComm);
+              .HasForeignKey(p => p.IdComm).OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<CommDemandeInfo>()//many to many
                .HasOne(e => e.demandeInformations)
                .WithMany(s => s.commDemandeInfos)
-                .HasForeignKey(p => p.IdDemandeInfo);
+                .HasForeignKey(p => p.IdDemandeInfo).OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<CommVote>()//many to many
         .HasOne(e => e.votes)
         .WithMany(s => s.commVotes)
-         .HasForeignKey(p => p.IdVote);
+         .HasForeignKey(p => p.IdVote).OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<CommVote>()//many to many
                .HasOne(e => e.commentaires)
                .WithMany(s => s.commVotes)
-                .HasForeignKey(p => p.IdVote);
+                .HasForeignKey(p => p.IdComm).OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<SousCategorie>()
                .HasOne(e => e.Categories)
                .WithMany(s => s.sousCategories)
-                .HasForeignKey(p => p.CatFK); //one to many
+                .HasForeignKey(p => p.CatFK)
+                .OnDelete(DeleteBehavior.ClientSetNull); //one to many
 
         }
     }
