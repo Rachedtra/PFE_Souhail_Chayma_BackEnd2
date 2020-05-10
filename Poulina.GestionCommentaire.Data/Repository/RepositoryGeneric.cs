@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Poulina.GestionCommentaire.Data.Context;
 using Poulina.GestionCommentaire.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Poulina.GestionCommentaire.Data.Repository
@@ -40,11 +42,26 @@ namespace Poulina.GestionCommentaire.Data.Repository
             return tab.Find(id);
         }
 
-        public List<TEntity> GetAll()
-        {
-            return tab.ToList();
-        }
 
+
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> condition = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> includes = null)
+        {
+
+
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            if (includes != null)
+            {
+                query = includes(query);
+            }
+
+            if (condition != null)
+            {
+                return query.Where(condition).ToList();
+            }
+
+            return query.ToList();
+        }
         public string Update(TEntity entity)
         {
             tab.Attach(entity);

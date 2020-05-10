@@ -23,7 +23,7 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
 
         public Task<List<TEntity>> Handle(GetAllQueryGeneric<TEntity> request, CancellationToken cancellationToken)
         {
-            var entity = _dataRepository.GetAll();
+            var entity = _dataRepository.GetAll(request.Condition, request.Includes);
             return Task.FromResult(entity);
         }
     }

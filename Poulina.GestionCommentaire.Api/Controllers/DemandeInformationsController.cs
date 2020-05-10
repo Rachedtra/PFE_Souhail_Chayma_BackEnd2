@@ -51,7 +51,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         }
 
         // PUT: api/DemandeInformation/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<string>> Put(DemandeInformation de)
         {
             var comm = new UpdateCommandGeneric<DemandeInformation>(de);

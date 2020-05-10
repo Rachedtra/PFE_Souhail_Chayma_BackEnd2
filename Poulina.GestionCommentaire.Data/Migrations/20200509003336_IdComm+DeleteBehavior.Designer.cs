@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Poulina.GestionCommentaire.Data.Context;
 
 namespace Poulina.GestionCommentaire.Data.Migrations
 {
     [DbContext(typeof(GestionCommContext))]
-    partial class GestionCommContextModelSnapshot : ModelSnapshot
+    [Migration("20200509003336_IdComm+DeleteBehavior")]
+    partial class IdCommDeleteBehavior
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,8 +30,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
 
                     b.Property<Guid>("IdDemandeInfo");
 
-                    b.Property<bool>("IsActiveCatInfo");
-
                     b.HasKey("IdCatDemande");
 
                     b.HasIndex("IdCat");
@@ -43,8 +43,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 {
                     b.Property<Guid>("IdCat")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsActiveCat");
 
                     b.Property<string>("Label");
 
@@ -61,8 +59,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                     b.Property<Guid?>("IdComm");
 
                     b.Property<Guid?>("IdDemandeInfo");
-
-                    b.Property<bool>("IsActiveCommInfo");
 
                     b.HasKey("IdCommInfo");
 
@@ -82,8 +78,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
 
                     b.Property<Guid?>("IdVote");
 
-                    b.Property<bool>("IsActiveCommVote");
-
                     b.HasKey("IdCommVote");
 
                     b.HasIndex("IdComm");
@@ -102,8 +96,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsActiveComm");
-
                     b.HasKey("IdComm");
 
                     b.ToTable("Commentaires");
@@ -118,8 +110,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("IsActiveInfo");
-
                     b.HasKey("IdDemandeInfo");
 
                     b.ToTable("DemandeInformation");
@@ -131,8 +121,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("CatFK");
-
-                    b.Property<bool>("IsActiveSousCat");
 
                     b.Property<string>("Label");
 
@@ -147,8 +135,6 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 {
                     b.Property<Guid>("IdVote")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("IsActiveVote");
 
                     b.Property<int>("Note");
 

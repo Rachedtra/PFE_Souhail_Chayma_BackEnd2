@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Poulina.GestionCommentaire.Domain.Models
+namespace Poulina.GestionCommentaire.Domain.DTO
 {
-   public class CommVote
-    { 
-        public Guid IdCommVote { get; set;  }
-
-
-
+   public class CommVoteDTO
+    {
+        public Guid IdCommVote { get; set; }
         public Guid? IdComm { get; set; }
-        public Commentaires commentaires { get; set; }
         public Guid? IdVote { get; set; }
-        public Vote votes { get; set;  }
         public Boolean IsActiveCommVote { get; set; } = true;
+        public string DescriptionComm { get; set; }
+        public int Note { get; set; }
 
 
     }

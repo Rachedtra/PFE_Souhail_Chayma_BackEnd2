@@ -9,6 +9,8 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public Guid IdDemandeInfo { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
+        public Boolean IsActiveInfo { get; set; } = true;
+
         public ICollection<CommDemandeInfo> commDemandeInfos { get; set; }
         public ICollection<CatDemandeInfo> catDemandeInfos { get; set; }
 

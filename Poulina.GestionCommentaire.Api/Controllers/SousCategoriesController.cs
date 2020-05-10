@@ -2,65 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Poulina.GestionCommentaire.Data.Context;
 using Poulina.GestionCommentaire.Domain.Commandes;
+using Poulina.GestionCommentaire.Domain.DTO;
 using Poulina.GestionCommentaire.Domain.Models;
 using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class SousCategoriesController : ControllerBase
     {
+        private readonly GestionCommContext _context;
         private readonly IMediator _mediator;
-        public SousCategoriesController(IMediator mediator)
+        private readonly IMapper _mapper;
+
+
+        public SousCategoriesController(GestionCommContext context , IMediator mediator  , IMapper mapper)
         {
-            _mediator = mediator;
-        }
-        // GET: api/SousCategorie
-        [HttpGet]
-        public async Task<ActionResult<SousCategorie>> Get()
-        {
-            var query = new GetAllQueryGeneric<SousCategorie>();
-            var result = await _mediator.Send(query);
-            return Ok(result);
+            _context = context;
+            _mediator = mediator; 
+            _mapper=mapper; 
         }
 
-        // GET: api/SousCategorie/5
+        // GET: api/SousCategories
+        [HttpGet]
+        public async Task<ActionResult<SousCategorieDTO>> Get()
+        {
+            var query = new GetAllQueryGeneric<SousCategorie>(null, includes: z => z.Include(b => b.Categories));
+            var result = await _mediator.Send(query);
+            var dto = _mapper.Map<List<SousCategorieDTO>>(result);
+            return Ok(dto);
+        }
+
+        // GET: api/SousCategories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SousCategorie>> Get(Guid id)
         {
-            var query = new GetIdQueryGeneric<DemandeInformation>(id);
+            var query = new GetIdQueryGeneric<SousCategorie>(id);
             var result = await _mediator.Send(query);
             return Ok(result);
 
         }
 
-        // POST: api/SousCategorie
+        // PUT: api/SousCategories/5
+        [HttpPut]
+        public async Task<ActionResult<string>> Put(SousCategorie cat)
+        {
+            var comm = new UpdateCommandGeneric<SousCategorie>(cat);
+            var result = await _mediator.Send(comm);
+            return Ok(result);
+
+        }
+        // POST: api/SousCategories
         [HttpPost]
-        public async Task<ActionResult<string>> Post(SousCategorie de)
+        public async Task<ActionResult<string>> Post(SousCategorie cat)
         {
-            var comm = new CreateCommandGeneric<SousCategorie>(de);
+            var comm = new CreateCommandGeneric<SousCategorie>(cat);
             var result = await _mediator.Send(comm);
             return Ok(result);
 
         }
 
-        // PUT: api/SousCategorie/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<string>> Put(SousCategorie de)
-        {
-            var comm = new UpdateCommandGeneric<SousCategorie>(de);
-            var result = await _mediator.Send(comm);
-            return Ok(result);
-
-        }
-
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/SousCategories/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<string>> Delete(Guid Id)
         {
@@ -69,5 +79,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(result);
 
         }
+
+    
     }
 }
