@@ -35,7 +35,16 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var dto = _mapper.Map<List<CatDemandeInfoDTO>>(result);
             return Ok(dto);
         }
-
+        // GET: api/GetActiveListCatInfo
+        [Route("GetActiveListCatInfo")]
+        [HttpGet]
+        public async Task<ActionResult<CatDemandeInfoDTO>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<CatDemandeInfo>(condition: x => x.IsActiveCatInfo == true, includes: z => z.Include(b => b.categories).Include(x => x.demandeInformations));
+            var result = await _mediator.Send(query);
+            var dto = _mapper.Map<List<CatDemandeInfoDTO>>(result);
+            return Ok(dto);
+        }
         // GET: api/CatDemandeInfo/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CatDemandeInfo>> Get(Guid id)

@@ -29,6 +29,15 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+        // GET: api/GetActiveListCategorie
+        [Route("GetActiveListCategorie")]
+        [HttpGet]
+        public async Task<ActionResult<Categorie>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<Categorie>(condition: x => x.IsActiveCat == true, null);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
 
         // GET: api/Categorie/5
         [HttpGet("{id}")]

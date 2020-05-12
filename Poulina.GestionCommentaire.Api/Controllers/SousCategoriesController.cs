@@ -40,7 +40,16 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var dto = _mapper.Map<List<SousCategorieDTO>>(result);
             return Ok(dto);
         }
-
+        // GET: api/GetActiveListSousCategories
+        [Route("GetActiveListSousCategories")]
+        [HttpGet]
+        public async Task<ActionResult<SousCategorieDTO>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<SousCategorie>(condition: x => x.IsActiveSousCat == true, includes: z => z.Include(b => b.Categories));
+            var result = await _mediator.Send(query);
+            var dto = _mapper.Map<List<SousCategorieDTO>>(result);
+            return Ok(dto);
+        }
         // GET: api/SousCategories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SousCategorie>> Get(Guid id)

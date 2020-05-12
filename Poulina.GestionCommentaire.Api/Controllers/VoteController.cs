@@ -30,6 +30,15 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(result);
         }
 
+        // GET: api/GetActiveListVote
+        [Route("GetActiveListVote")]
+        [HttpGet]
+        public async Task<ActionResult<Vote>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<Vote>(condition: x => x.IsActiveVote == true, null);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
         // GET: api/Vote/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vote>> Get(Guid id)

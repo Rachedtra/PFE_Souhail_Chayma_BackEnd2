@@ -37,6 +37,16 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(dto);
         }
 
+        // GET: api/GetActiveListCommVote
+        [Route("GetActiveListCommVote")]
+        [HttpGet]
+        public async Task<ActionResult<CommVoteDTO>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<CommVote>(condition: x => x.IsActiveCommVote == true, includes: z => z.Include(b => b.commentaires).Include(x => x.votes));
+            var result = await _mediator.Send(query);
+            var dto = _mapper.Map<List<CommVoteDTO>>(result);
+            return Ok(dto);
+        }
         // GET: api/CommVote/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CommVote>> Get(Guid id)

@@ -38,6 +38,17 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
             return Ok(dto);
         }
+        // GET: api/GetActiveListCommInfo
+        [Route("GetActiveListCommInfo")]
+        [HttpGet]
+        public async Task<ActionResult<CommDemandeInfoDTO>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<CommDemandeInfo>(condition: x => x.IsActiveCommInfo == true, includes: z => z.Include(b => b.commentaires)
+            .Include(x => x.demandeInformations));
+            var result = await _mediator.Send(query);
+            var dto = _mapper.Map<List<CommDemandeInfoDTO>>(result);
+            return Ok(dto);
+        }
 
         // GET: api/CommDemandeInfo/5
         [HttpGet("{id}")]
