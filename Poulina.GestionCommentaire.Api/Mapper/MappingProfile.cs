@@ -24,12 +24,16 @@ namespace Poulina.GestionCommentaire.Api.Mapper
             CreateMap<CommDemandeInfo, CommDemandeInfoDTO>()
               .ForMember(d => d.DescriptionComm, i => i.MapFrom(src => src.commentaires.Description))
               .ForMember(d => d.DescriptionInfo, i => i.MapFrom(src => src.demandeInformations.Description))
+              .ForMember(d => d.TitreInfo, i => i.MapFrom(src => src.demandeInformations.Titre))
               .ReverseMap();
             
             CreateMap<CommVote, CommVoteDTO>()
               .ForMember(d => d.DescriptionComm, i => i.MapFrom(src => src.commentaires.Description))
               .ForMember(d => d.Note, i => i.MapFrom(src => src.votes.Note))
               .ReverseMap();
+
+             
         }
+
     }
 }

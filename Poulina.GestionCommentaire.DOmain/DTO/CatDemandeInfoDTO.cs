@@ -12,6 +12,8 @@ namespace Poulina.GestionCommentaire.Domain.DTO
         public Boolean IsActiveCatInfo { get; set; } = true;
         public string LabelCat { get; set; }
         public string DescriptionInfo { get; set; }
+        public string TitreInfo { get; set; }
+        
 
     }
 }

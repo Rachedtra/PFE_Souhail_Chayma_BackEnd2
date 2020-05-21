@@ -9,7 +9,6 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public Guid IdCat { get; set;  }
         public string Label { get; set;  }
         public Boolean IsActiveCat { get; set; } = true;
-
         public ICollection<CatDemandeInfo> catDemandeInfos { get; set;  }
         public ICollection<SousCategorie> sousCategories { get; set;  }
     }
