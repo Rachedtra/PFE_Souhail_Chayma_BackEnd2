@@ -15,7 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Poulina.GestionCommentaire.Data.Context;
-
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Poulina.GestionCommentaire.Api
 {
@@ -37,6 +37,17 @@ namespace Poulina.GestionCommentaire.Api
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "Gestion Comm",
+                    Description = " Web API",
+
+                });
+
+            });
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
@@ -56,6 +67,12 @@ namespace Poulina.GestionCommentaire.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+              app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API1 V1");
+            });
             app.UseCors(options =>
           options.WithOrigins("http://localhost:4200")
            .AllowAnyMethod()

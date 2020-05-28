@@ -70,5 +70,11 @@ namespace Poulina.GestionCommentaire.Data.Repository
             return "update avec succes";
         }
 
+        public string AddId(TEntity entity, Guid id)
+        {
+            tab.Add(entity);
+            _context.SaveChanges();
+            return "add avec succes";
+        }
     }
 }

@@ -39,16 +39,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(result);
         }
 
-        // GET: api/GetInfoByDomaine
-        [Route("GetInfoByDomaine")]
-        [HttpGet]
-        public async Task<ActionResult<DemandeInformation>> GetInfoByDomaine(Guid id)
-        {
 
-            var query = new GetAllQueryGeneric<DemandeInformation>(condition : x => x.DomaineNom == id, null);
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
         // GET: api/DemandeInformation/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DemandeInformation>> Get(Guid id)
@@ -69,6 +60,20 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         }
 
+        [Route("Posted")]
+        [HttpPost]
+        public Task<string> Posted(DemandeInformation de, Guid idCat)
+        {
+            var demande = new CreateIdCommandGeneric(de , idCat);
+            var result = _mediator.Send(demande);
+            DemandeInformation demandeInformation =  _mediator.Send(new GetAllQueryGeneric<DemandeInformation>(condition: x => x.IsActiveInfo == true, null)).Result.LastOrDefault();
+            var catDemande = new CatDemandeInfo();
+            catDemande.IdCat = idCat;
+            catDemande.IdDemandeInfo = demandeInformation.IdDemandeInfo;
+            var catInfo = new CreateCommandGeneric<CatDemandeInfo>(catDemande);
+            _mediator.Send(catInfo);
+            return (result);        
+        }
         // PUT: api/DemandeInformation/5
         [HttpPut]
         public async Task<ActionResult<string>> Put(DemandeInformation de)
