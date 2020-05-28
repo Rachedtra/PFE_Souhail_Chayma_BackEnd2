@@ -19,6 +19,7 @@ namespace Poulina.GestionCommentaire.Api.Mapper
             CreateMap<CatDemandeInfo, CatDemandeInfoDTO>()
              .ForMember(d => d.LabelCat, i => i.MapFrom(src => src.categories.Label))
              .ForMember(d => d.DescriptionInfo, i => i.MapFrom(src => src.demandeInformations.Description))
+             .ForMember(d => d.TitreInfo, i => i.MapFrom(src => src.demandeInformations.Titre))
              .ReverseMap();
 
             CreateMap<CommDemandeInfo, CommDemandeInfoDTO>()
