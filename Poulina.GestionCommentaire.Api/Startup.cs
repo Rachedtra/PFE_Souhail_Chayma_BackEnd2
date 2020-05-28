@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using GestionCommentaire.Infra.Ioc;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Poulina.GestionCommentaire.Data.Context;
+
 
 namespace Poulina.GestionCommentaire.Api
 {
@@ -33,6 +35,12 @@ namespace Poulina.GestionCommentaire.Api
               opt.UseSqlServer(Configuration.GetConnectionString("premiereappdb")));
             services.AddMediatR(typeof(Startup));
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(Startup));
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
             RegisterService(services);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -48,7 +56,12 @@ namespace Poulina.GestionCommentaire.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(options =>
+          options.WithOrigins("http://localhost:4200")
+           .AllowAnyMethod()
+           .SetIsOriginAllowed((host) => true)
+           .AllowCredentials()
+           .AllowAnyHeader());
             app.UseMvc();
         }
     }

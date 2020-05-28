@@ -8,7 +8,10 @@ namespace Poulina.GestionCommentaire.Domain.Models
     {
         public Guid IdVote { get; set;  }
         public int Note { get; set;  }
+        public Boolean IsActiveVote { get; set; } = true;
+
         public ICollection<CommVote> commVotes { get; set; }
 
     }
 }
+

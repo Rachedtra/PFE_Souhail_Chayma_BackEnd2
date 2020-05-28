@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{933E8A78-F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{47495ACF-EFC5-4CD3-93B8-E437A9107CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poulina.GestionCommentaire.Infra.Ioc", "GestionCommentaire.Infra.Ioc\Poulina.GestionCommentaire.Infra.Ioc.csproj", "{6DE8EA65-B6A4-4E9E-9C70-6AD28874ACD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poulina.GestionCommentaire.Infra.Ioc", "GestionCommentaire.Infra.Ioc\Poulina.GestionCommentaire.Infra.Ioc.csproj", "{6DE8EA65-B6A4-4E9E-9C70-6AD28874ACD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poulina.GestionCommentaire.Data", "Poulina.GestionCommentaire.Data\Poulina.GestionCommentaire.Data.csproj", "{A5DD7789-83FE-4C01-B85F-507811329299}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poulina.GestionCommentaire.Data", "Poulina.GestionCommentaire.Data\Poulina.GestionCommentaire.Data.csproj", "{A5DD7789-83FE-4C01-B85F-507811329299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poulina.GestionCommentaire.Domain", "Poulina.GestionCommentaire.DOmain\Poulina.GestionCommentaire.Domain.csproj", "{53F08A68-2CBE-4B9E-AFCA-B3FB52B83DC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poulina.GestionCommentaire.Domain", "Poulina.GestionCommentaire.DOmain\Poulina.GestionCommentaire.Domain.csproj", "{53F08A68-2CBE-4B9E-AFCA-B3FB52B83DC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Poulina.GestionCommentaire.Api", "Poulina.GestionCommentaire.Api\Poulina.GestionCommentaire.Api.csproj", "{EBB22231-1DD1-4139-A1F0-2F93DCDCC39B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Poulina.GestionCommentaire.Api", "Poulina.GestionCommentaire.Api\Poulina.GestionCommentaire.Api.csproj", "{EBB22231-1DD1-4139-A1F0-2F93DCDCC39B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

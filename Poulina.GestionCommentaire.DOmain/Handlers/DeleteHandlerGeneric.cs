@@ -15,6 +15,7 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
 
 
         public DeleteHandlerGeneric(IRepositoryGeneric<TEntity> dataRepository)
+
         {
 
             _dataRepository = dataRepository;

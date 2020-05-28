@@ -11,6 +11,7 @@ namespace Poulina.GestionCommentaire.Domain.Commandes
 
         public DeleteCommandGeneric(Guid id)
         {
+
             Id = id;
         }
 

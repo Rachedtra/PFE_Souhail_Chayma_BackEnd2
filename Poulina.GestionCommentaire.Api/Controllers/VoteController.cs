@@ -11,6 +11,7 @@ using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class VoteController : ControllerBase
@@ -29,6 +30,15 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(result);
         }
 
+        // GET: api/GetActiveListVote
+        [Route("GetActiveListVote")]
+        [HttpGet]
+        public async Task<ActionResult<Vote>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<Vote>(condition: x => x.IsActiveVote == true, null);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
         // GET: api/Vote/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vote>> Get(Guid id)
@@ -50,7 +60,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         }
 
         // PUT: api/Vote/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<string>> Put(Vote cv)
         {
             var comm = new UpdateCommandGeneric<Vote>(cv);

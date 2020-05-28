@@ -11,6 +11,7 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
+
                     IdCat = table.Column<Guid>(nullable: false),
                     Label = table.Column<string>(nullable: true)
                 },

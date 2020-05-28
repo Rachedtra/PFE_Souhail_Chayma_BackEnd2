@@ -13,6 +13,7 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
     {
         private readonly IRepositoryGeneric<TEntity> _dataRepository;
 
+
         public GetIdHandlerGeneric(IRepositoryGeneric<TEntity> dataRepository)
         {
 

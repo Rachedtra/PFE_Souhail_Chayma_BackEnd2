@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 using Poulina.GestionCommentaire.Domain.Commandes;
 using Poulina.GestionCommentaire.Domain.Models;
 using Poulina.GestionCommentaire.Domain.Queries;
@@ -25,6 +26,15 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         public async Task<ActionResult<Categorie>> Get()
         {
             var query = new GetAllQueryGeneric<Categorie>();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        // GET: api/GetActiveListCategorie
+        [Route("GetActiveListCategorie")]
+        [HttpGet]
+        public async Task<ActionResult<Categorie>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<Categorie>(condition: x => x.IsActiveCat == true, null);
             var result = await _mediator.Send(query);
             return Ok(result);
         }
@@ -50,7 +60,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         }
 
         // PUT: api/Categorie/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<string>> Put(Categorie cat)
         {
             var comm = new UpdateCommandGeneric<Categorie>(cat);

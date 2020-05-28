@@ -11,5 +11,8 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public DemandeInformation demandeInformations { get; set; }
         public Guid? IdComm { get; set; }
         public Commentaires commentaires { get; set;  }
+        public Boolean IsActiveCommInfo { get; set; } = true;
+
+
     }
 }

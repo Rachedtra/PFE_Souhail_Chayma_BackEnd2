@@ -11,6 +11,7 @@ using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class DemandeInformationController : ControllerBase
@@ -28,7 +29,26 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var result = await _mediator.Send(query);
             return Ok(result);
         }
+        // GET: api/GetActiveListDemandeInfo
+        [Route("GetActiveListDemandeInfo")]
+        [HttpGet]
+        public async Task<ActionResult<DemandeInformation>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<DemandeInformation>(condition: x => x.IsActiveInfo == true, null);
+            var result = await _mediator.Send(query); 
+            return Ok(result);
+        }
 
+        // GET: api/GetInfoByDomaine
+        [Route("GetInfoByDomaine")]
+        [HttpGet]
+        public async Task<ActionResult<DemandeInformation>> GetInfoByDomaine(Guid id)
+        {
+
+            var query = new GetAllQueryGeneric<DemandeInformation>(condition : x => x.DomaineNom == id, null);
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
         // GET: api/DemandeInformation/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DemandeInformation>> Get(Guid id)
@@ -50,7 +70,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         }
 
         // PUT: api/DemandeInformation/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<string>> Put(DemandeInformation de)
         {
             var comm = new UpdateCommandGeneric<DemandeInformation>(de);

@@ -14,6 +14,7 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
         private readonly IRepositoryGeneric<TEntity> _dataRepository;
 
 
+
         public CreateHandlerGeneric(IRepositoryGeneric<TEntity> dataRepository)
         {
 

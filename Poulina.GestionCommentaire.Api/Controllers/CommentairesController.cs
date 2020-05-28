@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Poulina.GestionCommentaire.Data.Context;
 using Poulina.GestionCommentaire.Domain.Commandes;
 using Poulina.GestionCommentaire.Domain.Models;
+
 using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers
@@ -27,6 +28,15 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         public async Task<ActionResult<Commentaires>> Get()
         {
             var query = new GetAllQueryGeneric<Commentaires>();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+        // GET: api/GetActiveListComm
+        [Route("GetActiveListComm")]
+        [HttpGet]
+        public async Task<ActionResult<Commentaires>> GetActiveList()
+        {
+            var query = new GetAllQueryGeneric<Commentaires>(condition: x => x.IsActiveComm == true, null);
             var result = await _mediator.Send(query);
             return Ok(result);
         }
@@ -52,7 +62,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         }
 
         // PUT: api/Commentaires/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult<string>> Put(Commentaires cat)
         {
             var comm = new UpdateCommandGeneric<Commentaires>(cat);
