@@ -41,6 +41,20 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(result);
         }
 
+        [Route("PostedComm")]
+        [HttpPost]
+        public Task<string> PostedComm(Commentaires cm, Guid idDemande)
+        {
+            var comm = new CreateIdCommandGeneric<Commentaires>(cm, idDemande);
+            var result = _mediator.Send(comm);
+            Commentaires commentaires = _mediator.Send(new GetAllQueryGeneric<Commentaires>(condition: x => x.IsActiveComm == true, null)).Result.LastOrDefault();
+            var CommInfo = new CommDemandeInfo();
+            CommInfo.IdDemandeInfo = idDemande;
+            CommInfo.IdComm = commentaires.IdComm;
+            var CommDemande = new CreateCommandGeneric<CommDemandeInfo>(CommInfo);
+            _mediator.Send(CommDemande);
+            return (result);
+        }
         // GET: api/Commentaires/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Categorie>> Get(Guid id)

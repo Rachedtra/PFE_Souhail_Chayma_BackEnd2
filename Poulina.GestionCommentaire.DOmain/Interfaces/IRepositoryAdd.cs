@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Poulina.GestionCommentaire.Domain.Interfaces
 {
-    public interface IRepositoryAdd
+    public interface IRepositoryAdd<TEntity> where TEntity : class
     {
-        string AddId(DemandeInformation entity, Guid id);
+        string AddId(TEntity entity, Guid id);
     }
 }

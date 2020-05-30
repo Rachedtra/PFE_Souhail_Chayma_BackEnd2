@@ -64,7 +64,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         [HttpPost]
         public Task<string> Posted(DemandeInformation de, Guid idCat)
         {
-            var demande = new CreateIdCommandGeneric(de , idCat);
+            var demande = new CreateIdCommandGeneric<DemandeInformation>(de , idCat);
             var result = _mediator.Send(demande);
             DemandeInformation demandeInformation =  _mediator.Send(new GetAllQueryGeneric<DemandeInformation>(condition: x => x.IsActiveInfo == true, null)).Result.LastOrDefault();
             var catDemande = new CatDemandeInfo();
