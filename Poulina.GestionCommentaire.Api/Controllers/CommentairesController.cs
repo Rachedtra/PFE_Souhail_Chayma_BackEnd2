@@ -41,9 +41,19 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return Ok(result);
         }
 
+        [Route("PostedCommMs")]
+        [HttpPost]
+        public async Task<ActionResult<string>> PostedCommMs(Commentaires cat)
+        {
+            var comm = new CreateObjectCommand<Commentaires>(cat);
+            var result = await _mediator.Send(comm);
+            return Ok(result.IdComm);
+
+        }
+
         [Route("PostedComm")]
         [HttpPost]
-        public Task<string> PostedComm(Commentaires cm, Guid idDemande)
+        public Task<Commentaires> PostedComm(Commentaires cm, Guid idDemande)
         {
             var comm = new CreateIdCommandGeneric<Commentaires>(cm, idDemande);
             var result = _mediator.Send(comm);

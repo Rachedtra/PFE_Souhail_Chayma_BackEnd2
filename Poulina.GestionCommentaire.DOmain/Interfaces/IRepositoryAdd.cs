@@ -7,6 +7,7 @@ namespace Poulina.GestionCommentaire.Domain.Interfaces
 {
     public interface IRepositoryAdd<TEntity> where TEntity : class
     {
-        string AddId(TEntity entity, Guid id);
+        TEntity AddId(TEntity entity, Guid id);
+        TEntity AddObject(TEntity entity);
     }
 }

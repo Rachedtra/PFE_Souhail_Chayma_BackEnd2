@@ -20,10 +20,13 @@ namespace GestionCommentaire.Infra.Ioc
 
 
             services.AddScoped<IRepositoryAdd<DemandeInformation>, RepositoryAdd<DemandeInformation>>();
-            services.AddTransient<IRequestHandler<CreateIdCommandGeneric<DemandeInformation>, string>, CreateIdHandler<DemandeInformation>>();
+            services.AddTransient<IRequestHandler<CreateIdCommandGeneric<DemandeInformation>, DemandeInformation>, CreateIdHandler<DemandeInformation>>();
 
             services.AddScoped<IRepositoryAdd<Commentaires>, RepositoryAdd<Commentaires>>();
-            services.AddTransient<IRequestHandler<CreateIdCommandGeneric<Commentaires>, string>, CreateIdHandler<Commentaires>>();
+            services.AddTransient<IRequestHandler<CreateIdCommandGeneric<Commentaires>, Commentaires>, CreateIdHandler<Commentaires>>();
+
+            services.AddScoped<IRepositoryAdd<Commentaires>, RepositoryAdd<Commentaires>>();
+            services.AddTransient<IRequestHandler<CreateObjectCommand<Commentaires>, Commentaires>, CreateObjectHandler<Commentaires>>();
             //CatDemandeInfo
             services.AddScoped<IRepositoryGeneric<CatDemandeInfo>, RepositoryGeneric<CatDemandeInfo>>();
 

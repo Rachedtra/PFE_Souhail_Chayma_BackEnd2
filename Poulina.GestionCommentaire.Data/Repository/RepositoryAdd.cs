@@ -17,11 +17,18 @@ namespace Poulina.GestionCommentaire.Data.Repository
             _context = context;
             tab = _context.Set<TEntity>();
         }
-        public string AddId(TEntity entity , Guid id )
+        public TEntity AddId(TEntity entity , Guid id )
         {
             tab.Add(entity);
             _context.SaveChanges();
-            return "add avec succes";
+            return entity;
+        }
+
+        public TEntity AddObject(TEntity entity)
+        {
+            tab.Add(entity);
+            _context.SaveChanges();
+            return entity;
         }
     }
 }

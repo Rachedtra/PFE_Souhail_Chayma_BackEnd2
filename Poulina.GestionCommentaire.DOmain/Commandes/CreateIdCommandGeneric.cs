@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Poulina.GestionCommentaire.Domain.Commandes
 {
-   public class CreateIdCommandGeneric<TEntity> : IRequest<string> where TEntity : class
+   public class CreateIdCommandGeneric<TEntity> : IRequest<TEntity> where TEntity : class
     {
         public TEntity entity { get; set; }
         public Guid id { get; set; }

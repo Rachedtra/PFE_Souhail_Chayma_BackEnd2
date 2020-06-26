@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Poulina.GestionCommentaire.Domain.Handlers
 {
-   public class CreateIdHandler<TEntity> : IRequestHandler<CreateIdCommandGeneric<TEntity>, TEntity> where TEntity : class
+    public class CreateObjectHandler<TEntity> : IRequestHandler<CreateObjectCommand<TEntity>, TEntity> where TEntity : class
     {
         private readonly IRepositoryAdd<TEntity> _dataRepository;
 
 
 
-        public CreateIdHandler(IRepositoryAdd<TEntity> dataRepository)
+        public CreateObjectHandler(IRepositoryAdd<TEntity> dataRepository)
         {
 
             _dataRepository = dataRepository;
@@ -23,12 +23,13 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
 
         }
 
-   
-        Task<TEntity> IRequestHandler<CreateIdCommandGeneric<TEntity>, TEntity>.Handle(CreateIdCommandGeneric<TEntity> request, CancellationToken cancellationToken)
+        public Task<TEntity> Handle(CreateObjectCommand<TEntity> request, CancellationToken cancellationToken)
         {
-            var result = _dataRepository.AddId(request.entity, request.id);
+            var result = _dataRepository.AddObject(request.entity);
 
             return Task.FromResult(result);
         }
     }
 }
+
+
