@@ -17,6 +17,7 @@ namespace GestionCommentaire.Infra.Ioc
         public static void RegisterServices(IServiceCollection services)
         {
             services.AddTransient<GestionCommContext>();
+            services.AddScoped<RepositoryUser>();
 
 
             services.AddScoped<IRepositoryAdd<DemandeInformation>, RepositoryAdd<DemandeInformation>>();

@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using AutoMapper;
 using GestionCommentaire.Infra.Ioc;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Polly;
 using Poulina.GestionCommentaire.Data.Context;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -30,16 +27,27 @@ namespace Poulina.GestionCommentaire.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
+
         {
+            services.AddControllers();
+
+            services.AddRazorPages(); 
             services.AddDbContext<GestionCommContext>(opt =>
               opt.UseSqlServer(Configuration.GetConnectionString("premiereappdb")));
             services.AddMediatR(typeof(Startup));
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(typeof(Startup));
+            services.AddHttpClient("User", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:50581/api/");
 
+            })
+                .AddTransientHttpErrorPolicy(x =>
+                    x.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(300)));
+            services.AddRazorPages(); 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "Gestion Comm",
@@ -52,8 +60,9 @@ namespace Poulina.GestionCommentaire.Api
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
+
             RegisterService(services);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
         private void RegisterService(IServiceCollection services)
         {
@@ -61,13 +70,14 @@ namespace Poulina.GestionCommentaire.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-              app.UseSwagger();
+            app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
@@ -79,7 +89,12 @@ namespace Poulina.GestionCommentaire.Api
            .SetIsOriginAllowed((host) => true)
            .AllowCredentials()
            .AllowAnyHeader());
-            app.UseMvc();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            }); 
         }
     }
 }
