@@ -67,9 +67,9 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         }
         // GET: api/Commentaires/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Categorie>> Get(Guid id)
+        public async Task<ActionResult<Commentaires>> Get(Guid id)
         {
-            var query = new GetIdQueryGeneric<Categorie>(id);
+            var query = new GetIdQueryGeneric<Commentaires>(id);
             var result = await _mediator.Send(query);
             return Ok(result);
 

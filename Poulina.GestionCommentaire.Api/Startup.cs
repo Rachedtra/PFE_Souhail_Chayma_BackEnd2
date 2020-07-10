@@ -36,6 +36,7 @@ namespace Poulina.GestionCommentaire.Api
               opt.UseSqlServer(Configuration.GetConnectionString("premiereappdb")));
             services.AddMediatR(typeof(Startup));
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddControllers().AddNewtonsoftJson();
             services.AddAutoMapper(typeof(Startup));
             services.AddHttpClient("User", client =>
             {
