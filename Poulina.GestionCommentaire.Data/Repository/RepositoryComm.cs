@@ -8,31 +8,24 @@ using System.Text;
 
 namespace Poulina.GestionCommentaire.Data.Repository
 {
-   public  class RepositoryAdd<TEntity> : IRepositoryAdd<TEntity> where TEntity : class
+   public class RepositoryComm : IRepositoryComm<Commentaires> 
     {
-        private DbSet<TEntity> tab = null;
+      
         private DbSet<Commentaires> tabcomm = null;
         private readonly GestionCommContext _context;
-        public RepositoryAdd(GestionCommContext context)
+        public RepositoryComm(GestionCommContext context)
         {
             _context = context;
-            tab = _context.Set<TEntity>();
             tabcomm = _context.Set<Commentaires>();
         }
-        public TEntity AddId(TEntity entity , Guid id )
+
+
+        public Commentaires Add(Commentaires c, Guid id)
         {
-            tab.Add(entity);
+            tabcomm.Add(c);
+            c.FkInfo = id;
             _context.SaveChanges();
-            return entity;
+            return c;
         }
-
-        public TEntity AddObject(TEntity entity)
-        {
-            tab.Add(entity);
-            _context.SaveChanges();
-            return entity;
-        }
-
-
     }
 }

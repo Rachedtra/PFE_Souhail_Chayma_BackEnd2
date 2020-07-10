@@ -44,6 +44,15 @@ namespace Poulina.GestionCommentaire.Api
             })
                 .AddTransientHttpErrorPolicy(x =>
                     x.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(300)));
+
+            services.AddHttpClient("MS", client =>
+            {
+                client.BaseAddress = new Uri("http://localhost:54735/api/");
+
+            })
+               .AddTransientHttpErrorPolicy(x =>
+                   x.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(300)));
+
             services.AddRazorPages(); 
             services.AddSwaggerGen(c =>
             {

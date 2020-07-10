@@ -22,19 +22,25 @@ namespace Poulina.GestionCommentaire.Api.Mapper
              .ForMember(d => d.TitreInfo, i => i.MapFrom(src => src.demandeInformations.Titre))
              .ReverseMap();
 
-            CreateMap<CommDemandeInfo, CommDemandeInfoDTO>()
-              .ForMember(d => d.DescriptionComm, i => i.MapFrom(src => src.commentaires.Description))
-              .ForMember(d => d.DescriptionInfo, i => i.MapFrom(src => src.demandeInformations.Description))
-              .ForMember(d => d.TitreInfo, i => i.MapFrom(src => src.demandeInformations.Titre))
-              .ForMember(d => d.DateComm, i => i.MapFrom(src => src.commentaires.Date))
-              .ReverseMap();
+            //CreateMap<CommDemandeInfo, CommDemandeInfoDTO>()
+            //  .ForMember(d => d.DescriptionComm, i => i.MapFrom(src => src.commentaires.Description))
+            //  .ForMember(d => d.DescriptionInfo, i => i.MapFrom(src => src.demandeInformations.Description))
+            //  .ForMember(d => d.TitreInfo, i => i.MapFrom(src => src.demandeInformations.Titre))
+            //  .ForMember(d => d.DateComm, i => i.MapFrom(src => src.commentaires.Date))
+            //  .ReverseMap();
             
             CreateMap<CommVote, CommVoteDTO>()
               .ForMember(d => d.DescriptionComm, i => i.MapFrom(src => src.commentaires.Description))
               .ForMember(d => d.Note, i => i.MapFrom(src => src.votes.Note))
               .ReverseMap();
 
-             
+            CreateMap<Commentaires, CommentairesDTO>()
+             .ForMember(d => d.DescriptionInfo, i => i.MapFrom(src => src.demandeInformation.Description))
+             .ReverseMap();
+
+            CreateMap<DemandeInformation, DemandeInformationDTO>(); 
+       
+
         }
 
     }

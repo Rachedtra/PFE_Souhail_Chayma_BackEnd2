@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Poulina.GestionCommentaire.Data.Context;
 using Poulina.GestionCommentaire.Domain.Commandes;
+using Poulina.GestionCommentaire.Domain.DTO;
 using Poulina.GestionCommentaire.Domain.Models;
-
 using Poulina.GestionCommentaire.Domain.Queries;
 
 namespace Poulina.GestionCommentaire.Api.Controllers
@@ -19,17 +20,22 @@ namespace Poulina.GestionCommentaire.Api.Controllers
     public class CommentairesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public CommentairesController(IMediator mediator)
+        private readonly IMapper _mapper;
+
+        public CommentairesController(IMediator mediator , IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper; 
         }
         // GET: api/Commentaires
         [HttpGet]
-        public async Task<ActionResult<Commentaires>> Get()
+        public async Task<ActionResult<CommentairesDTO>> Get()
         {
-            var query = new GetAllQueryGeneric<Commentaires>();
+            var query = new GetAllQueryGeneric<Commentaires>(null, includes: z => z.Include(b => b.demandeInformation));
             var result = await _mediator.Send(query);
-            return Ok(result);
+            var dto = _mapper.Map<List<CommentairesDTO>>(result);
+
+            return Ok(dto);
         }
         // GET: api/GetActiveListComm
         [Route("GetActiveListComm")]
@@ -55,14 +61,8 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         [HttpPost]
         public Task<Commentaires> PostedComm(Commentaires cm, Guid idDemande)
         {
-            var comm = new CreateIdCommandGeneric<Commentaires>(cm, idDemande);
+            var comm = new CreateComm<Commentaires>(cm, idDemande);
             var result = _mediator.Send(comm);
-            Commentaires commentaires = _mediator.Send(new GetAllQueryGeneric<Commentaires>(condition: x => x.IsActiveComm == true, null)).Result.LastOrDefault();
-            var CommInfo = new CommDemandeInfo();
-            CommInfo.IdDemandeInfo = idDemande;
-            CommInfo.IdComm = commentaires.IdComm;
-            var CommDemande = new CreateCommandGeneric<CommDemandeInfo>(CommInfo);
-            _mediator.Send(CommDemande);
             return (result);
         }
         // GET: api/Commentaires/5

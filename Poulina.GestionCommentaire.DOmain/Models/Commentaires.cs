@@ -11,8 +11,10 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public DateTime Date { get; set;  }
         public Boolean IsActiveComm { get; set; } = true;
 
-        public ICollection<CommDemandeInfo> commDemandeInfos { get; set;  }
-        public ICollection<CommVote> commVotes { get; set;  }
+        public DemandeInformation demandeInformation { get; set; }
+        public Guid? FkInfo { get; set;  }
+        public Guid? FkMs { get; set;  }
+        public virtual ICollection<CommVote> commVotes { get; set;  }
     }
 }
 

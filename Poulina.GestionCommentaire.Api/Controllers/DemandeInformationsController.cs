@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Poulina.GestionCommentaire.Data.Repository;
 using Poulina.GestionCommentaire.Domain.Commandes;
+using Poulina.GestionCommentaire.Domain.DTO;
 using Poulina.GestionCommentaire.Domain.Models;
 using Poulina.GestionCommentaire.Domain.Queries;
 
@@ -17,26 +22,51 @@ namespace Poulina.GestionCommentaire.Api.Controllers
     public class DemandeInformationController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public DemandeInformationController(IMediator mediator)
+        private readonly RepositoryDomaine _repo;
+        private readonly IMapper _mapper;
+
+
+        public DemandeInformationController(IMediator mediator, RepositoryDomaine repo , IMapper mapper)
         {
+            _mapper = mapper; 
+            _repo = repo;
             _mediator = mediator;
-        }
-        // GET: api/DemandeInformation
-        [HttpGet]
-        public async Task<ActionResult<DemandeInformation>> Get()
+    }
+    // GET: api/DemandeInformation
+    [HttpGet]
+        public List<DemandeInformationDTO> Get()
         {
-            var query = new GetAllQueryGeneric<DemandeInformation>();
-            var result = await _mediator.Send(query);
-            return Ok(result);
+           var tab = _repo.GetDomaine().Result.ToList();
+            var query = new GetAllQueryGeneric<DemandeInformation>(condition : null, includes: null);
+            var result = _mediator.Send(query).Result;
+            
+            var dto = _mapper.Map<List<DemandeInformationDTO>>(result);
+
+            var resultDTO = new List<DemandeInformationDTO>();
+
+            foreach (var item in dto)
+            {
+                item.DomaineNom = tab.Find(x => x.IdDomain.Equals(item.IdDomain)).Nom;
+                resultDTO.Add(item);
+            }
+            return resultDTO;
+
         }
+          
+        
+
+
+
         // GET: api/GetActiveListDemandeInfo
         [Route("GetActiveListDemandeInfo")]
         [HttpGet]
-        public async Task<ActionResult<DemandeInformation>> GetActiveList()
+        public async Task<ActionResult<DemandeInformationDTO>> GetActiveList()
         {
-            var query = new GetAllQueryGeneric<DemandeInformation>(condition: x => x.IsActiveInfo == true, null);
-            var result = await _mediator.Send(query); 
-            return Ok(result);
+            var query = new GetAllQueryGeneric<DemandeInformation>(condition: x => x.IsActiveInfo == true,null);
+            var result = await _mediator.Send(query);
+            var dto = _mapper.Map<List<DemandeInformationDTO>>(result);
+          
+            return Ok(dto);
         }
 
 
@@ -91,6 +121,14 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var comm = new DeleteCommandGeneric<DemandeInformation>(Id);
             var result = await _mediator.Send(comm);
             return Ok(result);
+
+        }
+
+        [Route("GetDomaine")]
+        [HttpGet]
+        public async Task<IEnumerable<Domaine>> GetDomaine()
+        {
+            return await _repo.GetDomaine();
 
         }
     }

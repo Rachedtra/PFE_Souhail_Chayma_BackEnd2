@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Poulina.GestionCommentaire.Data.Migrations
 {
-    public partial class Tables : Migration
+    public partial class InitialMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,26 +11,13 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-
                     IdCat = table.Column<Guid>(nullable: false),
-                    Label = table.Column<string>(nullable: true)
+                    Label = table.Column<string>(nullable: true),
+                    IsActiveCat = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.IdCat);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Commentaires",
-                columns: table => new
-                {
-                    IdComm = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Commentaires", x => x.IdComm);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,7 +26,10 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 {
                     IdDemandeInfo = table.Column<Guid>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    Date = table.Column<DateTime>(nullable: false)
+                    Date = table.Column<DateTime>(nullable: false),
+                    IsActiveInfo = table.Column<bool>(nullable: false),
+                    Titre = table.Column<string>(nullable: true),
+                    IdDomain = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +41,8 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 columns: table => new
                 {
                     IdVote = table.Column<Guid>(nullable: false),
-                    Note = table.Column<int>(nullable: false)
+                    Note = table.Column<int>(nullable: false),
+                    IsActiveVote = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,7 +55,8 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 {
                     IdSousCate = table.Column<Guid>(nullable: false),
                     Label = table.Column<string>(nullable: true),
-                    CatFK = table.Column<Guid>(nullable: false)
+                    CatFK = table.Column<Guid>(nullable: false),
+                    IsActiveSousCat = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +66,7 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                         column: x => x.CatFK,
                         principalTable: "Categories",
                         principalColumn: "IdCat",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,7 +75,8 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 {
                     IdCatDemande = table.Column<Guid>(nullable: false),
                     IdCat = table.Column<Guid>(nullable: true),
-                    IdDemandeInfo = table.Column<Guid>(nullable: false)
+                    IdDemandeInfo = table.Column<Guid>(nullable: false),
+                    IsActiveCatInfo = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,29 +92,26 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                         column: x => x.IdDemandeInfo,
                         principalTable: "DemandeInformation",
                         principalColumn: "IdDemandeInfo",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CommDemandeInfos",
+                name: "Commentaires",
                 columns: table => new
                 {
-                    IdCommInfo = table.Column<Guid>(nullable: false),
-                    IdDemandeInfo = table.Column<Guid>(nullable: true),
-                    IdComm = table.Column<Guid>(nullable: true)
+                    IdComm = table.Column<Guid>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    Date = table.Column<DateTime>(nullable: false),
+                    IsActiveComm = table.Column<bool>(nullable: false),
+                    FkInfo = table.Column<Guid>(nullable: true),
+                    FkMs = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommDemandeInfos", x => x.IdCommInfo);
+                    table.PrimaryKey("PK_Commentaires", x => x.IdComm);
                     table.ForeignKey(
-                        name: "FK_CommDemandeInfos_Commentaires_IdComm",
-                        column: x => x.IdComm,
-                        principalTable: "Commentaires",
-                        principalColumn: "IdComm",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_CommDemandeInfos_DemandeInformation_IdDemandeInfo",
-                        column: x => x.IdDemandeInfo,
+                        name: "FK_Commentaires_DemandeInformation_FkInfo",
+                        column: x => x.FkInfo,
                         principalTable: "DemandeInformation",
                         principalColumn: "IdDemandeInfo",
                         onDelete: ReferentialAction.Restrict);
@@ -133,14 +123,15 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 {
                     IdCommVote = table.Column<Guid>(nullable: false),
                     IdComm = table.Column<Guid>(nullable: true),
-                    IdVote = table.Column<Guid>(nullable: true)
+                    IdVote = table.Column<Guid>(nullable: true),
+                    IsActiveCommVote = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CommVotes", x => x.IdCommVote);
                     table.ForeignKey(
-                        name: "FK_CommVotes_Commentaires_IdVote",
-                        column: x => x.IdVote,
+                        name: "FK_CommVotes_Commentaires_IdComm",
+                        column: x => x.IdComm,
                         principalTable: "Commentaires",
                         principalColumn: "IdComm",
                         onDelete: ReferentialAction.Restrict);
@@ -163,14 +154,14 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 column: "IdDemandeInfo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommDemandeInfos_IdComm",
-                table: "CommDemandeInfos",
-                column: "IdComm");
+                name: "IX_Commentaires_FkInfo",
+                table: "Commentaires",
+                column: "FkInfo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommDemandeInfos_IdDemandeInfo",
-                table: "CommDemandeInfos",
-                column: "IdDemandeInfo");
+                name: "IX_CommVotes_IdComm",
+                table: "CommVotes",
+                column: "IdComm");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommVotes_IdVote",
@@ -189,16 +180,10 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                 name: "CatDemandeInfos");
 
             migrationBuilder.DropTable(
-                name: "CommDemandeInfos");
-
-            migrationBuilder.DropTable(
                 name: "CommVotes");
 
             migrationBuilder.DropTable(
                 name: "SousCategories");
-
-            migrationBuilder.DropTable(
-                name: "DemandeInformation");
 
             migrationBuilder.DropTable(
                 name: "Commentaires");
@@ -208,6 +193,9 @@ namespace Poulina.GestionCommentaire.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "DemandeInformation");
         }
     }
 }
