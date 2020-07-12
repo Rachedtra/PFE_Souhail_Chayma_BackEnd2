@@ -27,5 +27,13 @@ namespace Poulina.GestionCommentaire.Data.Repository
             _context.SaveChanges();
             return c;
         }
+
+        public Commentaires AddCommMs(Commentaires c, Guid id)
+        {
+            tabcomm.Add(c);
+            c.FkMs = id;
+            _context.SaveChanges();
+            return c;
+        }
     }
 }

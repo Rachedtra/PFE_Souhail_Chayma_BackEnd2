@@ -32,5 +32,23 @@ namespace Poulina.GestionCommentaire.Data.Repository
                 return null;
             }
         }
+
+        public async Task<IEnumerable<Ms>> GetMs()
+        {
+            var httpClient = _httpClientFactory.CreateClient("MS");
+            var response = await httpClient.GetAsync($"MS");
+            string responseStream = response.Content.ReadAsStringAsync().Result;
+
+            try
+            {
+                var users = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Ms>>(responseStream);
+
+                return await Task<List<Ms>>.FromResult(users);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

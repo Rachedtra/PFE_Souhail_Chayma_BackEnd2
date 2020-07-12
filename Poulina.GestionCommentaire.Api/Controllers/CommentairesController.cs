@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Poulina.GestionCommentaire.Data.Context;
+using Poulina.GestionCommentaire.Data.Repository;
 using Poulina.GestionCommentaire.Domain.Commandes;
 using Poulina.GestionCommentaire.Domain.DTO;
 using Poulina.GestionCommentaire.Domain.Models;
@@ -21,22 +22,62 @@ namespace Poulina.GestionCommentaire.Api.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
+        private readonly RepositoryDomaine _repo;
 
-        public CommentairesController(IMediator mediator , IMapper mapper)
+
+        public CommentairesController(IMediator mediator , IMapper mapper, RepositoryDomaine repo)
         {
             _mediator = mediator;
-            _mapper = mapper; 
+            _mapper = mapper;
+            _repo = repo; 
         }
         // GET: api/Commentaires
         [HttpGet]
-        public async Task<ActionResult<CommentairesDTO>> Get()
+        //public List<DemandeInformationDTO> Get()
+        //{
+        //    var tab = _repo.GetDomaine().Result.ToList();
+        //    var query = new GetAllQueryGeneric<DemandeInformation>(condition: null, includes: null);
+        //    var result = _mediator.Send(query).Result;
+
+        //    var dto = _mapper.Map<List<DemandeInformationDTO>>(result);
+
+        //    var resultDTO = new List<DemandeInformationDTO>();
+
+        //    foreach (var item in dto)
+        //    {
+        //        item.DomaineNom = tab.Find(x => x.IdDomain.Equals(item.IdDomain)).Nom;
+        //        resultDTO.Add(item);
+        //    }
+        //    return resultDTO;
+
+        //}
+
+        public List<CommentairesDTO> Get()
         {
-            var query = new GetAllQueryGeneric<Commentaires>(null, includes: z => z.Include(b => b.demandeInformation));
-            var result = await _mediator.Send(query);
+            var tab = _repo.GetMs().Result.ToList();
+            var query = new GetAllQueryGeneric<Commentaires>(condition: null, includes: z => z.Include(b => b.demandeInformation));
+            var result = _mediator.Send(query).Result;
+
             var dto = _mapper.Map<List<CommentairesDTO>>(result);
 
-            return Ok(dto);
+            var resultDTO = new List<CommentairesDTO>();
+
+            foreach (var item in dto)
+            {
+                if (item.FkMs != null)
+                {
+                    item.LabelMs = tab.Find(x => x.IdMs.Equals(item.FkMs)).Label;
+                    resultDTO.Add(item);
+
+
+                }
+                else { resultDTO.Add(item); }
+                
+
+            }
+            return resultDTO;
         }
+
         // GET: api/GetActiveListComm
         [Route("GetActiveListComm")]
         [HttpGet]
@@ -49,12 +90,12 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         [Route("PostedCommMs")]
         [HttpPost]
-        public async Task<ActionResult<string>> PostedCommMs(Commentaires cat)
+        public Task<Commentaires> PostedCommMs(Commentaires cat,Guid idMs)
         {
-            var comm = new CreateObjectCommand<Commentaires>(cat);
-            var result = await _mediator.Send(comm);
-            return Ok(result.IdComm);
-
+            var comm = new CreateCommMs<Commentaires>(cat,idMs);
+            var result =  _mediator.Send(comm);
+            return(result);
+            
         }
 
         [Route("PostedComm")]
@@ -102,6 +143,15 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var comm = new DeleteCommandGeneric<Commentaires>(Id);
             var result = await _mediator.Send(comm);
             return Ok(result);
+
+        }
+
+
+        [Route("GetMs")]
+        [HttpGet]
+        public async Task<IEnumerable<Ms>> GetMs()
+        {
+            return await _repo.GetMs();
 
         }
     }

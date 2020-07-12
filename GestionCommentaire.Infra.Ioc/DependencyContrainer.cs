@@ -21,6 +21,7 @@ namespace GestionCommentaire.Infra.Ioc
             services.AddScoped<RepositoryDomaine>();
             services.AddScoped<IRepositoryComm<Commentaires>, RepositoryComm>();
             services.AddScoped<IRequestHandler<CreateComm<Commentaires>, Commentaires>, CreateCommHandler<Commentaires>>();
+            services.AddScoped<IRequestHandler<CreateCommMs<Commentaires>, Commentaires>, CreateCommMsHandler<Commentaires>>();
 
 
 
