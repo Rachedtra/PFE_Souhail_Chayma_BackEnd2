@@ -16,5 +16,9 @@ namespace Poulina.GestionCommentaire.Domain.DTO
         public Guid IdDomain { get; set;  }
         
         public string DomaineNom { get; set; }
+
+        public Guid? FkUser { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
