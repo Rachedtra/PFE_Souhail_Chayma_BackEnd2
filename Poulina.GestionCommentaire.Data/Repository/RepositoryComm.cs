@@ -8,9 +8,9 @@ using System.Text;
 
 namespace Poulina.GestionCommentaire.Data.Repository
 {
-   public class RepositoryComm : IRepositoryComm<Commentaires> 
+    public class RepositoryComm : IRepositoryComm<Commentaires>
     {
-      
+
         private DbSet<Commentaires> tabcomm = null;
         private readonly GestionCommContext _context;
         public RepositoryComm(GestionCommContext context)
@@ -20,10 +20,11 @@ namespace Poulina.GestionCommentaire.Data.Repository
         }
 
 
-        public Commentaires Add(Commentaires c, Guid id)
+        public Commentaires Add(Commentaires c, Guid id,Guid iduser)
         {
             tabcomm.Add(c);
             c.FkInfo = id;
+            c.FkUser = iduser; 
             _context.SaveChanges();
             return c;
         }

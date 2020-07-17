@@ -10,10 +10,13 @@ namespace Poulina.GestionCommentaire.Domain.Commandes
     {
         public Commentaires entity { get; set; }
         public Guid id { get; set; }
-        public CreateComm(Commentaires en, Guid Id)
+
+        public Guid idUser { get; set; }
+        public CreateComm(Commentaires en, Guid Id, Guid IDuser)
         {
             entity = en;
             id = Id;
+            idUser = IDuser; 
         }
     }
 }

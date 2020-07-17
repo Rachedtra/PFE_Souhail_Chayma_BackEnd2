@@ -15,6 +15,8 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public string Titre { get; set; }
         public Guid IdDomain { get; set; }
 
+        public Guid? FkUser { get; set; }
+
         public ICollection<Commentaires> commentaires { get; set; }
 
         //public ICollection<CommDemandeInfo> commDemandeInfos { get; set; }

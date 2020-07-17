@@ -23,13 +23,16 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
         private readonly RepositoryDomaine _repo;
+        private readonly RepositoryUser _repositoryUser; 
 
 
-        public CommentairesController(IMediator mediator , IMapper mapper, RepositoryDomaine repo)
+        public CommentairesController(IMediator mediator, IMapper mapper, RepositoryDomaine repo,
+            RepositoryUser repositoryUser)
         {
             _mediator = mediator;
             _mapper = mapper;
-            _repo = repo; 
+            _repo = repo;
+            _repositoryUser = repositoryUser; 
         }
         // GET: api/Commentaires
         [HttpGet]
@@ -54,15 +57,32 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         public List<CommentairesDTO> Get()
         {
+            var listUser = _repositoryUser.GetUsers().Result.ToList(); 
             var tab = _repo.GetMs().Result.ToList();
             var query = new GetAllQueryGeneric<Commentaires>(condition: null, includes: z => z.Include(b => b.demandeInformation));
             var result = _mediator.Send(query).Result;
 
             var dto = _mapper.Map<List<CommentairesDTO>>(result);
-
-            var resultDTO = new List<CommentairesDTO>();
+            var resultUsersDTO = new List<CommentairesDTO>();
 
             foreach (var item in dto)
+            {
+                if (item.FkUser != null)
+                {
+                    item.FirstName = listUser.Find(x => x.UserID.Equals(item.FkUser)).FirstName;
+                    item.LastName = listUser.Find(x => x.UserID.Equals(item.FkUser)).LastName;
+
+                    resultUsersDTO.Add(item);
+
+
+                }
+                else { resultUsersDTO.Add(item); }
+
+
+            }
+            var resultDTO = new List<CommentairesDTO>();
+
+            foreach (var item in resultUsersDTO)
             {
                 if (item.FkMs != null)
                 {
@@ -72,7 +92,7 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
                 }
                 else { resultDTO.Add(item); }
-                
+
 
             }
             return resultDTO;
@@ -90,19 +110,19 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         [Route("PostedCommMs")]
         [HttpPost]
-        public Task<Commentaires> PostedCommMs(Commentaires cat,Guid idMs)
+        public Task<Commentaires> PostedCommMs(Commentaires cat, Guid idMs)
         {
-            var comm = new CreateCommMs<Commentaires>(cat,idMs);
-            var result =  _mediator.Send(comm);
-            return(result);
-            
+            var comm = new CreateCommMs<Commentaires>(cat, idMs);
+            var result = _mediator.Send(comm);
+            return (result);
+
         }
 
         [Route("PostedComm")]
         [HttpPost]
-        public Task<Commentaires> PostedComm(Commentaires cm, Guid idDemande)
+        public Task<Commentaires> PostedComm(Commentaires cm, Guid idDemande, Guid idUser)
         {
-            var comm = new CreateComm<Commentaires>(cm, idDemande);
+            var comm = new CreateComm<Commentaires>(cm, idDemande, idUser);
             var result = _mediator.Send(comm);
             return (result);
         }
@@ -154,5 +174,13 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return await _repo.GetMs();
 
         }
+        [Route("GetUsers")]
+        [HttpGet]
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await _repositoryUser.GetUsers();
+
+        }
+
     }
 }
