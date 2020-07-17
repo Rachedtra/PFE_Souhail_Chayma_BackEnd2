@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Poulina.GestionCommentaire.Domain.Models
 {
-   public class CommDemandeInfo
+   public class CommDemandeInfo123
     {
         public Guid IdCommInfo { get; set;  }
         public Guid? IdDemandeInfo { get; set; }

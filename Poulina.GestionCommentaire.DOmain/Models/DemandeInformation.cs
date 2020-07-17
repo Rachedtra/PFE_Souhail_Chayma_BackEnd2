@@ -13,9 +13,13 @@ namespace Poulina.GestionCommentaire.Domain.Models
         public DateTime Date { get; set; }
         public Boolean IsActiveInfo { get; set; } = true;
         public string Titre { get; set; }
-        public Guid DomaineNom { get; set; }
-   
-        public ICollection<CommDemandeInfo> commDemandeInfos { get; set; }
+        public Guid IdDomain { get; set; }
+
+        public Guid? FkUser { get; set; }
+
+        public ICollection<Commentaires> commentaires { get; set; }
+
+        //public ICollection<CommDemandeInfo> commDemandeInfos { get; set; }
         public ICollection<CatDemandeInfo> catDemandeInfos { get; set; }
 
 

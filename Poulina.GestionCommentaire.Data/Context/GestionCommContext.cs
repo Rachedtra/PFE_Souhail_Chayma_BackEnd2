@@ -18,8 +18,9 @@ namespace Poulina.GestionCommentaire.Data.Context
         public DbSet<SousCategorie> SousCategories { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<CatDemandeInfo> CatDemandeInfos { get; set; }
-        public DbSet<CommDemandeInfo> CommDemandeInfos { get; set; }
+        //public DbSet<CommDemandeInfo> CommDemandeInfos { get; set; }
         public DbSet<CommVote> CommVotes { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,10 +36,11 @@ namespace Poulina.GestionCommentaire.Data.Context
              .HasKey(d => d.IdVote));
             modelBuilder.Entity<CatDemandeInfo>(entity => entity
               .HasKey(d => d.IdCatDemande));
-            modelBuilder.Entity<CommDemandeInfo>(entity => entity
-              .HasKey(d => d.IdCommInfo));
+            //modelBuilder.Entity<CommDemandeInfo>(entity => entity
+            //  .HasKey(d => d.IdCommInfo));
             modelBuilder.Entity<CommVote>(entity => entity
               .HasKey(d => d.IdCommVote));
+          
 
             modelBuilder.Entity<CatDemandeInfo>()//many to many
               .HasOne(e => e.categories)
@@ -50,15 +52,23 @@ namespace Poulina.GestionCommentaire.Data.Context
                .WithMany(s => s.catDemandeInfos)
                 .HasForeignKey(p => p.IdDemandeInfo).OnDelete(DeleteBehavior.ClientSetNull);
 
-            modelBuilder.Entity<CommDemandeInfo>()//many to many
-             .HasOne(e => e.commentaires)
-             .WithMany(s => s.commDemandeInfos)
-              .HasForeignKey(p => p.IdComm).OnDelete(DeleteBehavior.ClientSetNull);
 
-            modelBuilder.Entity<CommDemandeInfo>()//many to many
-               .HasOne(e => e.demandeInformations)
-               .WithMany(s => s.commDemandeInfos)
-                .HasForeignKey(p => p.IdDemandeInfo).OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Commentaires>()
+               .HasOne(e => e.demandeInformation)
+               .WithMany(s => s.commentaires)
+                .HasForeignKey(p => p.FkInfo)
+                .OnDelete(DeleteBehavior.ClientSetNull); //one to many
+
+            //modelBuilder.Entity<CommDemandeInfo>()//many to many
+            // .HasOne(e => e.commentaires)
+            // .WithMany(s => s.commDemandeInfos)
+            //  .HasForeignKey(p => p.IdComm).OnDelete(DeleteBehavior.ClientSetNull);
+
+            //modelBuilder.Entity<CommDemandeInfo>()//many to many
+            //   .HasOne(e => e.demandeInformations)
+            //   .WithMany(s => s.commDemandeInfos)
+            //    .HasForeignKey(p => p.IdDemandeInfo).OnDelete(DeleteBehavior.ClientSetNull);
+
 
             modelBuilder.Entity<CommVote>()//many to many
         .HasOne(e => e.votes)
@@ -75,6 +85,7 @@ namespace Poulina.GestionCommentaire.Data.Context
                .WithMany(s => s.sousCategories)
                 .HasForeignKey(p => p.CatFK)
                 .OnDelete(DeleteBehavior.ClientSetNull); //one to many
+
 
         }
     }

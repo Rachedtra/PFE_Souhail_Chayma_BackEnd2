@@ -17,10 +17,24 @@ namespace GestionCommentaire.Infra.Ioc
         public static void RegisterServices(IServiceCollection services)
         {
             services.AddTransient<GestionCommContext>();
+            services.AddScoped<RepositoryUser>();
+            services.AddScoped<RepositoryDomaine>();
+            services.AddScoped<IRepositoryComm<Commentaires>, RepositoryComm>();
+            services.AddScoped<IRequestHandler<CreateComm<Commentaires>, Commentaires>, CreateCommHandler<Commentaires>>();
+            services.AddScoped<IRequestHandler<CreateCommMs<Commentaires>, Commentaires>, CreateCommMsHandler<Commentaires>>();
 
 
 
 
+
+            services.AddScoped<IRepositoryAdd<DemandeInformation>, RepositoryAdd<DemandeInformation>>();
+            services.AddTransient<IRequestHandler<CreateIdCommandGeneric<DemandeInformation>, DemandeInformation>, CreateIdHandler<DemandeInformation>>();
+
+            services.AddScoped<IRepositoryAdd<Commentaires>, RepositoryAdd<Commentaires>>();
+            services.AddTransient<IRequestHandler<CreateIdCommandGeneric<Commentaires>, Commentaires>, CreateIdHandler<Commentaires>>();
+
+            services.AddScoped<IRepositoryAdd<Commentaires>, RepositoryAdd<Commentaires>>();
+            services.AddTransient<IRequestHandler<CreateObjectCommand<Commentaires>, Commentaires>, CreateObjectHandler<Commentaires>>();
             //CatDemandeInfo
             services.AddScoped<IRepositoryGeneric<CatDemandeInfo>, RepositoryGeneric<CatDemandeInfo>>();
 
@@ -47,13 +61,13 @@ namespace GestionCommentaire.Infra.Ioc
             services.AddScoped<IRequestHandler<DeleteCommandGeneric<CommVote>, string>, DeleteHandlerGeneric<CommVote>>();
             services.AddScoped<IRequestHandler<UpdateCommandGeneric<CommVote>, string>, UpdateHandlerGeneric<CommVote>>();
             //CommDemandeInfo
-            services.AddScoped<IRepositoryGeneric<CommDemandeInfo>, RepositoryGeneric<CommDemandeInfo>>();
+            //services.AddScoped<IRepositoryGeneric<CommDemandeInfo>, RepositoryGeneric<CommDemandeInfo>>();
 
-            services.AddScoped<IRequestHandler<GetAllQueryGeneric<CommDemandeInfo>, List<CommDemandeInfo>>, GetAllHandlerGeneric<CommDemandeInfo>>();
-            services.AddScoped<IRequestHandler<GetIdQueryGeneric<CommDemandeInfo>, CommDemandeInfo>, GetIdHandlerGeneric<CommDemandeInfo>>();
-            services.AddScoped<IRequestHandler<CreateCommandGeneric<CommDemandeInfo>, string>, CreateHandlerGeneric<CommDemandeInfo>>();
-            services.AddScoped<IRequestHandler<DeleteCommandGeneric<CommDemandeInfo>, string>, DeleteHandlerGeneric<CommDemandeInfo>>();
-            services.AddScoped<IRequestHandler<UpdateCommandGeneric<CommDemandeInfo>, string>, UpdateHandlerGeneric<CommDemandeInfo>>();
+            //services.AddScoped<IRequestHandler<GetAllQueryGeneric<CommDemandeInfo>, List<CommDemandeInfo>>, GetAllHandlerGeneric<CommDemandeInfo>>();
+            //services.AddScoped<IRequestHandler<GetIdQueryGeneric<CommDemandeInfo>, CommDemandeInfo>, GetIdHandlerGeneric<CommDemandeInfo>>();
+            //services.AddScoped<IRequestHandler<CreateCommandGeneric<CommDemandeInfo>, string>, CreateHandlerGeneric<CommDemandeInfo>>();
+            //services.AddScoped<IRequestHandler<DeleteCommandGeneric<CommDemandeInfo>, string>, DeleteHandlerGeneric<CommDemandeInfo>>();
+            //services.AddScoped<IRequestHandler<UpdateCommandGeneric<CommDemandeInfo>, string>, UpdateHandlerGeneric<CommDemandeInfo>>();
             //Commentaire
             services.AddScoped<IRepositoryGeneric<Commentaires>, RepositoryGeneric<Commentaires>>();
 

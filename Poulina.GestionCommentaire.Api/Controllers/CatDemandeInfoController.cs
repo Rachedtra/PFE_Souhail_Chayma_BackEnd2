@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Poulina.GestionCommentaire.Data.Repository;
 using Poulina.GestionCommentaire.Domain.Commandes;
 using Poulina.GestionCommentaire.Domain.DTO;
 using Poulina.GestionCommentaire.Domain.Models;
@@ -19,10 +20,12 @@ namespace Poulina.GestionCommentaire.Api.Controllers
     public class CatDemandeInfoController : ControllerBase
 
     {
+        private readonly RepositoryUser _repo; 
         private readonly IMediator _mediator;
         private readonly IMapper _mapper;
-        public CatDemandeInfoController(IMediator mediator , IMapper mapper)
+        public CatDemandeInfoController(IMediator mediator , IMapper mapper , RepositoryUser repo)
         {
+            _repo = repo; 
             _mediator = mediator;
             _mapper = mapper; 
         }
@@ -82,6 +85,14 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             var comm = new DeleteCommandGeneric<CatDemandeInfo>(Id);
             var result = await _mediator.Send(comm);
             return Ok(result);
+
+        }
+
+        [Route("GetUsers")]
+        [HttpGet]
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await _repo.GetUsers();
 
         }
     }

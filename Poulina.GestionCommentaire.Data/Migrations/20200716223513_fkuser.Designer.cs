@@ -10,27 +10,31 @@ using Poulina.GestionCommentaire.Data.Context;
 namespace Poulina.GestionCommentaire.Data.Migrations
 {
     [DbContext(typeof(GestionCommContext))]
-    [Migration("20200509190916_IsActive")]
-    partial class IsActive
+    [Migration("20200716223513_fkuser")]
+    partial class fkuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "3.1.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.CatDemandeInfo", b =>
                 {
                     b.Property<Guid>("IdCatDemande")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("IdCat");
+                    b.Property<Guid?>("IdCat")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("IdDemandeInfo");
+                    b.Property<Guid>("IdDemandeInfo")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActiveCatInfo");
+                    b.Property<bool>("IsActiveCatInfo")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdCatDemande");
 
@@ -44,47 +48,34 @@ namespace Poulina.GestionCommentaire.Data.Migrations
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.Categorie", b =>
                 {
                     b.Property<Guid>("IdCat")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActiveCat");
+                    b.Property<bool>("IsActiveCat")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Label");
+                    b.Property<string>("Label")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdCat");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.CommDemandeInfo", b =>
-                {
-                    b.Property<Guid>("IdCommInfo")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid?>("IdComm");
-
-                    b.Property<Guid?>("IdDemandeInfo");
-
-                    b.Property<bool>("IsActiveCommInfo");
-
-                    b.HasKey("IdCommInfo");
-
-                    b.HasIndex("IdComm");
-
-                    b.HasIndex("IdDemandeInfo");
-
-                    b.ToTable("CommDemandeInfos");
-                });
-
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.CommVote", b =>
                 {
                     b.Property<Guid>("IdCommVote")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("IdComm");
+                    b.Property<Guid?>("IdComm")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("IdVote");
+                    b.Property<Guid?>("IdVote")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActiveCommVote");
+                    b.Property<bool>("IsActiveCommVote")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdCommVote");
 
@@ -98,15 +89,30 @@ namespace Poulina.GestionCommentaire.Data.Migrations
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.Commentaires", b =>
                 {
                     b.Property<Guid>("IdComm")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActiveComm");
+                    b.Property<Guid?>("FkInfo")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("FkMs")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("FkUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActiveComm")
+                        .HasColumnType("bit");
 
                     b.HasKey("IdComm");
+
+                    b.HasIndex("FkInfo");
 
                     b.ToTable("Commentaires");
                 });
@@ -114,13 +120,26 @@ namespace Poulina.GestionCommentaire.Data.Migrations
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.DemandeInformation", b =>
                 {
                     b.Property<Guid>("IdDemandeInfo")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActiveInfo");
+                    b.Property<Guid?>("FkUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdDomain")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActiveInfo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Titre")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdDemandeInfo");
 
@@ -130,13 +149,17 @@ namespace Poulina.GestionCommentaire.Data.Migrations
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.SousCategorie", b =>
                 {
                     b.Property<Guid>("IdSousCate")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CatFK");
+                    b.Property<Guid>("CatFK")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActiveSousCat");
+                    b.Property<bool>("IsActiveSousCat")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Label");
+                    b.Property<string>("Label")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdSousCate");
 
@@ -148,11 +171,14 @@ namespace Poulina.GestionCommentaire.Data.Migrations
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.Vote", b =>
                 {
                     b.Property<Guid>("IdVote")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActiveVote");
+                    b.Property<bool>("IsActiveVote")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("Note");
+                    b.Property<int>("Note")
+                        .HasColumnType("int");
 
                     b.HasKey("IdVote");
 
@@ -167,18 +193,8 @@ namespace Poulina.GestionCommentaire.Data.Migrations
 
                     b.HasOne("Poulina.GestionCommentaire.Domain.Models.DemandeInformation", "demandeInformations")
                         .WithMany("catDemandeInfos")
-                        .HasForeignKey("IdDemandeInfo");
-                });
-
-            modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.CommDemandeInfo", b =>
-                {
-                    b.HasOne("Poulina.GestionCommentaire.Domain.Models.Commentaires", "commentaires")
-                        .WithMany("commDemandeInfos")
-                        .HasForeignKey("IdComm");
-
-                    b.HasOne("Poulina.GestionCommentaire.Domain.Models.DemandeInformation", "demandeInformations")
-                        .WithMany("commDemandeInfos")
-                        .HasForeignKey("IdDemandeInfo");
+                        .HasForeignKey("IdDemandeInfo")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.CommVote", b =>
@@ -192,11 +208,19 @@ namespace Poulina.GestionCommentaire.Data.Migrations
                         .HasForeignKey("IdVote");
                 });
 
+            modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.Commentaires", b =>
+                {
+                    b.HasOne("Poulina.GestionCommentaire.Domain.Models.DemandeInformation", "demandeInformation")
+                        .WithMany("commentaires")
+                        .HasForeignKey("FkInfo");
+                });
+
             modelBuilder.Entity("Poulina.GestionCommentaire.Domain.Models.SousCategorie", b =>
                 {
                     b.HasOne("Poulina.GestionCommentaire.Domain.Models.Categorie", "Categories")
                         .WithMany("sousCategories")
-                        .HasForeignKey("CatFK");
+                        .HasForeignKey("CatFK")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

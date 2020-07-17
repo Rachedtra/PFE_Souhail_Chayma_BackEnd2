@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +11,7 @@ namespace Poulina.GestionCommentaire.Domain.DTO
         public Guid? IdComm { get; set; }
         public Boolean IsActiveCommInfo { get; set; } = true;
         public string DescriptionComm { get; set; }
+        public DateTime DateComm { get; set; }
         public string DescriptionInfo { get; set; }
         public string TitreInfo { get; set;  }
 

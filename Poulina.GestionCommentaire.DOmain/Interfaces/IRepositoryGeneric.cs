@@ -12,6 +12,7 @@ namespace Poulina.GestionCommentaire.Domain.Interfaces
         //ist<TEntity> GetAll();
         TEntity Get(Guid id);
         string Add(TEntity entity);
+       
         string Update(TEntity entity);
         string Delete(Guid id);
         List<TEntity> GetAll(Expression<Func<TEntity, bool>> condition = null,
