@@ -6,16 +6,18 @@ using System.Text;
 
 namespace Poulina.GestionCommentaire.Domain.Commandes
 {
-   public class CreateIdCommandGeneric<TEntity> : IRequest<TEntity> where TEntity : class
+   public class CreateInfoCommand<DemandeInformation> : IRequest<DemandeInformation>
     {
-        public TEntity entity { get; set; }
+        public DemandeInformation entity { get; set; }
         public Guid id { get; set; }
+
         public Guid idUser { get; set; }
-        public CreateIdCommandGeneric(TEntity en , Guid Id, Guid User)
+        public CreateInfoCommand(DemandeInformation en, Guid Id, Guid IDuser)
         {
             entity = en;
             id = Id;
-            idUser = User; 
+            idUser = IDuser;
         }
+    
     }
 }

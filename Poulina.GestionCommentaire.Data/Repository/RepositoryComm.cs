@@ -29,10 +29,11 @@ namespace Poulina.GestionCommentaire.Data.Repository
             return c;
         }
 
-        public Commentaires AddCommMs(Commentaires c, Guid id)
+        public Commentaires AddCommMs(Commentaires c, Guid id , Guid idUser)
         {
             tabcomm.Add(c);
             c.FkMs = id;
+            c.FkUser = idUser; 
             _context.SaveChanges();
             return c;
         }

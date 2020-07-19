@@ -25,7 +25,7 @@ namespace Poulina.GestionCommentaire.Domain.Handlers
 
         public Task<Commentaires> Handle(CreateCommMs<Commentaires> request, CancellationToken cancellationToken)
         {
-            var result = _dataRepository.AddCommMs(request.entity, request.id);
+            var result = _dataRepository.AddCommMs(request.entity, request.id ,request.idUser);
 
             return Task.FromResult(result);
         }

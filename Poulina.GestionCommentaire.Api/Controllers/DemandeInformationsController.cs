@@ -25,18 +25,22 @@ namespace Poulina.GestionCommentaire.Api.Controllers
         private readonly RepositoryDomaine _repo;
         private readonly IMapper _mapper;
 
+        private readonly RepositoryUser _repositoryUser;
 
-        public DemandeInformationController(IMediator mediator, RepositoryDomaine repo , IMapper mapper)
+        public DemandeInformationController(IMediator mediator, RepositoryDomaine repo , IMapper mapper,
+            RepositoryUser repositoryUser)
         {
             _mapper = mapper; 
             _repo = repo;
             _mediator = mediator;
+            _repositoryUser = repositoryUser; 
     }
     // GET: api/DemandeInformation
     [HttpGet]
         public List<DemandeInformationDTO> Get()
         {
-           var tab = _repo.GetDomaine().Result.ToList();
+            var listUser = _repositoryUser.GetUsers().Result.ToList();
+            var tab = _repo.GetDomaine().Result.ToList();
             var query = new GetAllQueryGeneric<DemandeInformation>(condition : null, includes: null);
             var result = _mediator.Send(query).Result;
             
@@ -47,6 +51,11 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             foreach (var item in dto)
             {
                 item.DomaineNom = tab.Find(x => x.IdDomain.Equals(item.IdDomain)).Nom;
+                if (item.FkUser != null)
+                {
+                    item.FirstName = listUser.Find(x => x.UserID.Equals(item.FkUser)).FirstName;
+                    item.LastName = listUser.Find(x => x.UserID.Equals(item.FkUser)).LastName;
+                }
                 resultDTO.Add(item);
             }
             return resultDTO;
@@ -92,9 +101,9 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         [Route("Posted")]
         [HttpPost]
-        public Task<DemandeInformation> Posted(DemandeInformation de, Guid idCat)
+        public Task<DemandeInformation> Posted(DemandeInformation de, Guid idCat , Guid IdUser)
         {
-            var demande = new CreateIdCommandGeneric<DemandeInformation>(de , idCat);
+            var demande = new CreateInfoCommand<DemandeInformation>(de , idCat , IdUser);
             var result = _mediator.Send(demande);
             DemandeInformation demandeInformation =  _mediator.Send(new GetAllQueryGeneric<DemandeInformation>(condition: x => x.IsActiveInfo == true, null)).Result.LastOrDefault();
             var catDemande = new CatDemandeInfo();
@@ -131,5 +140,14 @@ namespace Poulina.GestionCommentaire.Api.Controllers
             return await _repo.GetDomaine();
 
         }
+        [Route("GetUsers")]
+        [HttpGet]
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await _repositoryUser.GetUsers();
+
+        }
+
+
     }
 }

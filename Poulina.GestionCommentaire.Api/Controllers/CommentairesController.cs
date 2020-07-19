@@ -110,9 +110,9 @@ namespace Poulina.GestionCommentaire.Api.Controllers
 
         [Route("PostedCommMs")]
         [HttpPost]
-        public Task<Commentaires> PostedCommMs(Commentaires cat, Guid idMs)
+        public Task<Commentaires> PostedCommMs(Commentaires cat, Guid idMs , Guid IdUser)
         {
-            var comm = new CreateCommMs<Commentaires>(cat, idMs);
+            var comm = new CreateCommMs<Commentaires>(cat, idMs,IdUser);
             var result = _mediator.Send(comm);
             return (result);
 
